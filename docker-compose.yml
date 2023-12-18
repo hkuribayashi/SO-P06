@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+
+  app:
+    build:
+      context: ./app  # Caminho para o diretório contendo o Dockerfile
+      dockerfile: Dockerfile      # Nome do Dockerfile (pode ser omitido se for o padrão)
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:latest
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: minhasenha
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    ports:
+    - "3306:3306"
